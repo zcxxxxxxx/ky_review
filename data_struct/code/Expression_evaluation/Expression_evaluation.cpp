@@ -2,12 +2,11 @@
 #include"Expression_evaluation.h"
 #include<iostream>
 #include<string>
-// #include<cstdlib>
 using namespace std;
 
 int main(){
-    string str = "3*4-(5-6/7)";
+    string str = "9+(3-1)*3+5/2";
     Expression_evaluation demo(str);
-    cout<<demo.translate();
+    cout<<demo.calculate();
     return 0;
 }

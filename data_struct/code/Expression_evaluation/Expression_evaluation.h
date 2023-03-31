@@ -18,15 +18,15 @@ class Expression_evaluation
 {
 private:
     string exp;   
-    stack<int> value;
+    
     int whatlevel(char str);
     int iswhat(char str);
 public:
     Expression_evaluation(string Exp);
     ~Expression_evaluation();
     string translate();
-    int calculate();
-    string calculate_small(char ch, int b, int a);
+    float calculate();
+    float calculate_small(char ch, float b, float a);
 };
 
 Expression_evaluation::Expression_evaluation(string Exp){
@@ -43,6 +43,7 @@ Expression_evaluation::~Expression_evaluation(){
  * @return string 
  */
 string Expression_evaluation::translate(){
+    // TODO: 转换多位数
     stack<char> sign;
     string exp_changed;
     for(auto ch : exp){
@@ -62,15 +63,18 @@ string Expression_evaluation::translate(){
                 while(!sign.isempty() && whatlevel(sign.gettop()) <= whatlevel(ch) && sign.gettop() != '('){
                     exp_changed.push_back(sign.pop());
                 }
-                if(!sign.isempty() && sign.gettop() == '(')
-                    sign.pop();
+                
                 sign.push(ch);
                 break;
             }
 
     }
-    while (!sign.isempty())
+    while (!sign.isempty()){
+        if(sign.gettop() == '(')
+            sign.pop();
         exp_changed.push_back(sign.pop());
+
+    }
     return exp_changed;
 }
 
@@ -112,38 +116,36 @@ int Expression_evaluation::whatlevel(char ch){
         return 0;
 }
 
-// int Expression_evaluation::calculate(){
-//     stack<string> expression;
-//     string str;
-//     for(auto ch : exp_changed){
-//         if(isnumber(ch)){
-//             str.push_back(ch);
-//             expression.push(str);
-//             str = "";
-//         }
-//         else{
-//             expression.push(calculate_small(ch, stoi(expression.pop()), stoi(expression.pop())));
-//         }
-//     }
-//     return stoi(expression.pop());
-
-// }
-
-string Expression_evaluation::calculate_small(char ch, int b, int a){
-    stringstream ss;  
+float Expression_evaluation::calculate(){
+    string exp_changed = translate();
+    stack<char> sign;
+    stack<float> value;
     string str;
-    int ans = 0;
+    for(auto ch : exp_changed){
+        switch (iswhat(ch)){
+        case 1:
+            value.push(ch - '0');
+            break;
+        case 2:
+            value.push(calculate_small(ch, value.pop(), value.pop()));
+            break;
+        }
+    }
+    return value.pop();
+
+}
+
+float Expression_evaluation::calculate_small(char ch, float b, float a){ 
+    float ans = 0;
     if(ch == '-')
-        ans = a - b;
+        ans = b - a;
     else if (ch == '+')
-        ans = a - b;
+        ans = b + a;
     else if (ch == '*')
-        ans = a * b;
+        ans = b * a;
     else if (ch == '/')
-        ans = a / b;  
-    ss << ans;
-    ss >> str;
-    return str;
+        ans = b / a;  
+    return ans;
 }
 
 #endif

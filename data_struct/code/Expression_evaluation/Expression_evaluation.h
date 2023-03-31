@@ -3,7 +3,7 @@
 
 #include<vector>
 #include<iostream>
-#include"../stack/stack.h"
+#include"../basic_struct/stack/stack.h"
 #include<string>
 #include<cstdlib>
 #include<sstream>  

@@ -60,15 +60,14 @@ T stack<T>::pop(){
     try{        
         if(data.empty())
             throw "error: stack is empty";
-        T elem = gettop();
-        return elem;
+        T elem = gettop();       
         data.pop_back();
         top--;
+        return elem;
     }
     catch(const char* msg){
         cerr << msg << endl;
     }
-   
 }
 
 template <class T>

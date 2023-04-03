@@ -17,16 +17,50 @@ using namespace std;
 class Expression_evaluation
 {
 private:
-    string exp;   
-    
+    string exp;  
+
+    /**
+     * @brief 判断优先级，加减为1，乘除为0
+     * 
+     * @param ch 
+     * @return int 
+     */    
     int whatlevel(char str);
+
+    /**
+     * @brief 判断字符ch是什么类型，数字返回1，运算符返回2，左括号返回3，右括号返回4
+     * 
+     * @param char 
+     * @return int 
+     */
     int iswhat(char str);
+
+    /**
+     * @brief 将中缀表达式转换成后缀表达式
+     * 
+     * @return string 
+     */
+    string translate();
+
+    /**
+     * @brief 二元运算符运算
+     * 
+     * @param ch 运算符
+     * @param b 操作数
+     * @param a 操作数
+     * @return float 
+     */
+    float calculate_small(char ch, float b, float a);
 public:
     Expression_evaluation(string Exp);
     ~Expression_evaluation();
-    string translate();
+
+    /**
+     * @brief 计算表达式
+     * 
+     * @return float 
+     */
     float calculate();
-    float calculate_small(char ch, float b, float a);
 };
 
 Expression_evaluation::Expression_evaluation(string Exp){
@@ -36,12 +70,6 @@ Expression_evaluation::Expression_evaluation(string Exp){
 Expression_evaluation::~Expression_evaluation(){
 }
 
-
-/**
- * @brief 将中缀表达式转换成后缀表达式
- * 
- * @return string 
- */
 string Expression_evaluation::translate(){
     // TODO: 转换多位数
     stack<char> sign;
@@ -79,12 +107,7 @@ string Expression_evaluation::translate(){
 }
 
 
-/**
- * @brief 判断字符ch是什么类型，数字返回1，运算符返回2，左括号返回3，右括号返回4
- * 
- * @param char 
- * @return int 
- */
+
 int Expression_evaluation::iswhat(char ch){
     try{
         if(ch >= '0' and ch <= '9')
@@ -103,12 +126,7 @@ int Expression_evaluation::iswhat(char ch){
     }
 }
 
-/**
- * @brief 判断优先级，加减为1，乘除为0
- * 
- * @param ch 
- * @return int 
- */
+
 int Expression_evaluation::whatlevel(char ch){  
     if(ch == '+' | ch == '-')
         return 1;
